@@ -4,8 +4,14 @@ var uslService = require('../services/urlService');
 
 router.get('*', function(req, res) {
     var shortUrl = req.originalUrl.slice(1);
-    var longUrl = uslService.getLongUrl(shortUrl, req.app.shortToLongHash);
-    res.redirect(longUrl);
+    urlService.getLongUrl(shortUrl, function(url) {
+    	if (url) {
+    		res.redirect(url.longUrl);
+
+    	} else {
+    		res.sendfile('./public/views/404.html');
+    	}
+    });
 });
 
 module.exports = router;

@@ -1,3 +1,5 @@
+var UrlModel = require('../models/')
+
 var encode = [];
 var decode = {};
 
@@ -16,21 +18,28 @@ for (var i = 0; i < encode.length; i++) {
     decode[encode[i]] = i;
 }
 
-var getShortUrl = function (longUrl, longToShortHash, shortToLongHash) {
+var getShortUrl = function (longUrl, callback) {
     if ( longUrl.indexOf('http') === -1) {
         longUrl = "http://" + longUrl;
     }
-    if (longToShortHash[longUrl] != null) {
-        return longToShortHash[longUrl];
-    } else {
-        var shortUrl = generateShortUrl(longToShortHash);
-        longToShortHash[longUrl] = shortUrl;
-        shortToLongHash[shortUrl] = longUrl;
-        return shortUrl;
-    }
+
+    UrlModel.findOne({ longUrl: longUrl }, function(err, url) {
+        if (url) {
+            callback(url);
+        } else {
+            generateShortUrl(function (shortUrl) {
+                var url = new UrlModel({ shortUrl: shortUrl, longUrl: longUrl });
+                url.save();
+                callback(url);
+            });
+        }
+    });
 };
 
-var generateShortUrl = function (longToShortHash) {
+var generateShortUrl = function (callback) {
+    UrlModel.find({}, function (err, urls) {
+        callback(convertTo62(urls.length));
+    })
     return Object.keys(longToShortHash).length;
 };
 
@@ -48,9 +57,9 @@ var convertTo62 = function ( num ) {
     return result;
 };
 
-var getLongUrl = function (shortUrl, shortToLongHash) {
-    return shortToLongHash[shortUrl];
-}
+var getLongUrl = function (shortUrl, callback) {
+    UrlModel.findOne({shortUrl: shortUrl})
+};
 
 module.exports = {
     getShortUrl: getShortUrl,

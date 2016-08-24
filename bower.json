@@ -1,0 +1,18 @@
+{
+  "name": "tinyurl",
+  "description": "",
+  "main": "server.js",
+  "license": "ISC",
+  "homepage": "https://github.com/QilinGu/TinyURL",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "semantic-ui-angular-jquery": "^0.1.1",
+    "semantic": "semantic-ui#^2.2.3"
+  }
+}

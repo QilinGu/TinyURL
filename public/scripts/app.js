@@ -1,13 +1,14 @@
-var app = angular.module('tinyurlApp', ['ng-Route', 'ng-Resource']);
+var app = angular.module('tinyurlApp', ['ngRoute', 'ngResource']);
 
 app.config(function ($routeProvider) {
 	$routeProvider
 	    .when("/", {
-	    	templateUrl: "../views/home.html",
+	    	templateUrl: "./public/views/home.html",
 	    	controller: "homeController"
 	    })
-	    .when("/url/:shortUrl", {
-	    	templateUrl: "../views/url.html",
-	    	controller: "urlController"
+	    .when("/urls/:shortUrl",
+	    {
+	    	templateUrl: "./public/views/url.html",
+	    	controller: "urlController",
 	    });
 });

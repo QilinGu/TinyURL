@@ -1,3 +1,4 @@
+var UrlModel = require('../models/urlModel');
 var encode = [];
 
 var genCharArray = function (charA, charZ) {
@@ -15,22 +16,29 @@ encode = encode.concat(genCharArray('A', 'Z'));
 encode = encode.concat(genCharArray('0', '9'));
 encode = encode.concat(genCharArray('a', 'z'));
 
-var getShortUrl = function (longUrl, longToShortHash, shortToLongHash) {
+var getShortUrl = function (longUrl, callback) {
     if ( longUrl.indexOf('http') === -1 ) {
         longUrl = "http://" + longUrl;
     }
-    if (longToShortHash[longUrl] != null) {
-        return longToShortHash[longUrl];
-    } else {
-        var shortUrl = generateShortUrl(longToShortHash);
-        longToShortHash[longUrl] = shortUrl;
-        shortToLongHash[shortUrl] = longUrl;
-        return shortUrl;
-    }
+    UrlModel.findOne({ longUrl: longUrl }, function (err, url) {
+        if (url) {
+            callback(url);
+        } else {
+            generateShortUrl(function (shortUrl) {
+                var url = new UrlModel({ shortUrl: shortUrl, longUrl: longUrl});
+                url.save();
+                //redisClient.set(shortUrl, longUrl);
+                //redisClient.set(longUrl, shortUrl);
+                callback(url);
+            });
+        }
+    });
 };
 
-var generateShortUrl = function (longToShortHash) {
-    return convertTo62(Object.keys(longToShortHash).length);
+var generateShortUrl = function (callback) {
+    UrlModel.find({}, function (err, urls) {
+        callback(convertTo62(urls.length));
+    });
 };
 
 var convertTo62 = function (num) {
@@ -42,8 +50,10 @@ var convertTo62 = function (num) {
     return result;
 };
 
-var getLongUrl = function (shortUrl, shortToLongHash) {
-    return shortToLongHash[shortUrl];
+var getLongUrl = function (shortUrl, callback) {
+    UrlModel.findOne({shortUrl: shortUrl}, function (err, url) {
+        callback(url);
+    });
 };
 
 module.exports = {

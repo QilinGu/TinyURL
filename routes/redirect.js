@@ -11,8 +11,13 @@ router.get('*', function(req, res) {
     } else if (shortUrl == 'services/authentication.js') {
     	res.sendfile('./services/authentication.js');
     } else {
-	    var longUrl = urlService.getLongUrl(shortUrl, req.app.shortToLongHash);
-	    res.redirect(longUrl);
+	    urlService.getLongUrl(shortUrl, function (url) {
+            if (url) {
+                res.redirect(url.longUrl);
+            } else {
+                res.sendfile('./public/views/404.html');
+            }
+        });
     }
 });
 

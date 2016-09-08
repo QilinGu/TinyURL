@@ -5,8 +5,14 @@ var redirectRouter = require('./routes/redirect');
 var indexRouter = require('./routes/index');
 var mongoose = require('mongoose');
 var jwt = require('jwt-simple');
+var bodyParser = require('body-parser');
+var bcrypt = require('bcryptjs');
+var moment = require('moment');
+var _ = require('lodash');
 
 mongoose.connect('mongodb://urluser:urlpwd@ds019678.mlab.com:19678/tinyurl');
+
+app.listen(3000);
 
 app.use('/public', express.static(__dirname + "/public"));
 
@@ -16,7 +22,48 @@ app.use('/:shortUrl', redirectRouter);
 
 app.use('/', indexRouter);
 
-app.listen(3000);
+app.use(bodyParser.json());
+
+app.use(bodyParser.urlencoded({ extended: false }));
+
+var tokenSecret = 'your unique secret';
+
+var userSchema = new mongoose.Schema({
+  name: { type: String, trim: true, required: true },
+  email: { type: String, unique: true, lowercase: true, trim: true },
+  password: String,
+  facebook: {
+    id: String,
+    email: String
+  },
+  google: {
+    id: String,
+    email: String
+  }
+});
+
+userSchema.pre('save', function(next) {
+  var user = this;
+  if (!user.isModified('password')) return next();
+  bcrypt.genSalt(10, function(err, salt) {
+    if (err) return next(err);
+    bcrypt.hash(user.password, salt, function(err, hash) {
+      if (err) return next(err);
+      user.password = hash;
+      next();
+    });
+  });
+});
+
+userSchema.methods.comparePassword = function(candidatePassword, cb) {
+  bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+    if (err) return cb(err);
+    cb(null, isMatch);
+  });
+};
+
+var User = mongoose.model('User', userSchema);
+
 
 function ensureAuthenticated(req, res, next) {
   if (req.headers.authorization) {
@@ -52,6 +99,7 @@ app.post('/auth/signup', function(req, res, next) {
     email: req.body.email,
     password: req.body.password
   });
+  console.log(JSON.stringify(req.body));
   user.save(function(err) {
     if (err) return next(err);
     res.send(200);

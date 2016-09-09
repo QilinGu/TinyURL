@@ -9,11 +9,14 @@ var bodyParser = require('body-parser');
 var bcrypt = require('bcryptjs');
 var moment = require('moment');
 var _ = require('lodash');
+var useragent = require('express-useragent');
 
 mongoose.connect('mongodb://urluser:urlpwd@ds019678.mlab.com:19678/tinyurl');
 
-app.listen(3000);
+app.use(useragent.express());
 
+
+app.use('/node_modules', express.static(__dirname + "/node_modules"));
 app.use('/public', express.static(__dirname + "/public"));
 
 app.use('/api/v1', restRouter);
@@ -21,6 +24,8 @@ app.use('/api/v1', restRouter);
 app.use('/:shortUrl', redirectRouter);
 
 app.use('/', indexRouter);
+
+app.listen(3000);
 
 app.use(bodyParser.json());
 

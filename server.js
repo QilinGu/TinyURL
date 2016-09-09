@@ -10,6 +10,9 @@ var bcrypt = require('bcryptjs');
 var moment = require('moment');
 var _ = require('lodash');
 var useragent = require('express-useragent');
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+var UrlSchema = require('./models/urlModel');
 
 mongoose.connect('mongodb://urluser:urlpwd@ds019678.mlab.com:19678/tinyurl');
 
@@ -37,6 +40,7 @@ var userSchema = new mongoose.Schema({
   name: { type: String, trim: true, required: true },
   email: { type: String, unique: true, lowercase: true, trim: true },
   password: String,
+  urls: [UrlSchema],
   facebook: {
     id: String,
     email: String

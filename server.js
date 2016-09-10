@@ -74,7 +74,7 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
 var User = mongoose.model('User', userSchema);
 
 
-function ensureAuthenticated(req, res, next) {
+function isAuthenticated(req, res, next) {
   if (req.headers.authorization) {
     var token = req.headers.authorization.split(' ')[1];
     try {

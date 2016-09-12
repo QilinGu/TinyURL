@@ -1,4 +1,5 @@
 var UrlModel = require('../models/urlModel');
+var User = require('../models/userModel');
 var encode = [];
 
 var genCharArray = function (charA, charZ) {
@@ -16,16 +17,21 @@ encode = encode.concat(genCharArray('A', 'Z'));
 encode = encode.concat(genCharArray('0', '9'));
 encode = encode.concat(genCharArray('a', 'z'));
 
-var getShortUrl = function (longUrl, callback) {
+var getShortUrl = function (longUrl, user, callback) {
     if ( longUrl.indexOf('http') === -1 ) {
         longUrl = "http://" + longUrl;
     }
-    UrlModel.findOne({ longUrl: longUrl }, function (err, url) {
+    UrlModel.findOne({ longUrl: longUrl, user: user }, function (err, url) {
         if (url) {
             callback(url);
         } else {
             generateShortUrl(function (shortUrl) {
-                var url = new UrlModel({ shortUrl: shortUrl, longUrl: longUrl});
+                var url = new UrlModel({
+                    shortUrl: shortUrl,
+                    longUrl: longUrl,
+                    user: user
+                });
+                console.log(url.user);
                 url.save();
                 //redisClient.set(shortUrl, longUrl);
                 //redisClient.set(longUrl, shortUrl);

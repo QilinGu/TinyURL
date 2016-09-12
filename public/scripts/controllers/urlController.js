@@ -1,14 +1,20 @@
 var app = angular.module("tinyurlApp");
 
 app.controller("urlController",
-	["$scope", "$http", "$routeParams", function($scope, $http, $routeParams) {
-		$http.get("/api/v1/urls/" + $routeParams.shortUrl)
+	["$scope", "$http", "$rootScope", "$routeParams", function($scope, $http, $rootScope, $routeParams) {
+        // var socket = io();
+        // socket.emit('statsPageOpen', {shortUrl: $stateParams.shortUrl});
+        // socket.on('reload', function () {
+        //     loadStats();
+        // });
+
+		$http.get('/api/v1/urls/' + $routeParams.shortUrl)
 		    .success(function (data) {
 		    	$scope.shortUrl = data.shortUrl;
 		    	$scope.longUrl = data.longUrl;
 		    	$scope.shortUrlToShow = "http://localhost:3000/" + data.shortUrl;
 		    });
-		$http.get("/api/v1/urls/" + $routeParams.shortUrl + "/totalClicks")
+		$http.get('/api/v1/urls/' + $routeParams.shortUrl + "/totalClicks")
             .success(function (data) {
                 $scope.totalClicks = data;
             });
@@ -21,7 +27,7 @@ app.controller("urlController",
             $scope.lineLabels = [];
             $scope.lineData = [];
             $scope.time = time;
-            $http.get("/api/v1/urls/" + $routeParams.shortUrl + "/" + time)
+            $http.get('/api/v1/urls/' + $routeParams.shortUrl + "/" + time)
                 .success(function (data) {
                     data.forEach(function (info) {
 
@@ -50,7 +56,7 @@ app.controller("urlController",
         var renderChart = function (chart, infos) {
             $scope[chart + 'Labels'] = [];
             $scope[chart + 'Data'] = [];
-            $http.get("/api/v1/urls/" + $routeParams.shortUrl + "/" + infos)
+            $http.get('/api/v1/urls/' + $routeParams.shortUrl + "/" + infos)
                 .success(function (data) {
                     data.forEach(function (info) {
                         $scope[chart + 'Labels'].push(info._id);

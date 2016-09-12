@@ -21,7 +21,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-8 col-md-offset-2">
+    <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-default">
             <div class="panel-heading">
                 Clicks for the past:
@@ -30,8 +30,8 @@
                 <a href="javascript:void(0);" ng-click="getTime(month)" ng-class="{ 'text-muted': time === 'month'}">Month</a>
             </div>
             <div class="panel-body">
-                <canvas id="line" class="chart chart-line" chart-data="lineData"
-                        chart-labels="lineLabels">
+                <canvas id="line" class="chart chart-line" chart-data="lineData" height="100"
+                        chart-labels="lineLabels" chart-colors = "['#59CEB7','#FA9494','#F1C795','#D2D6DE','#FDAA97']">
                 </canvas>
             </div>
         </div>
@@ -44,7 +44,7 @@
                 Referer
             </div>
             <div class="panel-body">
-                <canvas id="pie" class="chart chart-pie"
+                <canvas id="pie" class="chart chart-pie" chart-colors = "['#59CEB7','#FA9494','#F1C795','#D2D6DE','#FDAA97']"
                         chart-data="pieData" chart-labels="pieLabels" chart-options="chartOptions">
                 </canvas>
             </div>

@@ -12,7 +12,7 @@ var _ = require('lodash');
 var useragent = require('express-useragent');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var UrlSchema = require('./models/urlModel');
+var User = require('./models/userModel');
 
 mongoose.connect('mongodb://urluser:urlpwd@ds019678.mlab.com:19678/tinyurl');
 
@@ -36,42 +36,42 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 var tokenSecret = 'your unique secret';
 
-var userSchema = new mongoose.Schema({
-  name: { type: String, trim: true, required: true },
-  email: { type: String, unique: true, lowercase: true, trim: true },
-  password: String,
-  urls: [UrlSchema],
-  facebook: {
-    id: String,
-    email: String
-  },
-  google: {
-    id: String,
-    email: String
-  }
-});
+// var userSchema = new mongoose.Schema({
+//   name: { type: String, trim: true, required: true },
+//   email: { type: String, unique: true, lowercase: true, trim: true },
+//   password: String,
+//   urls: [UrlSchema],
+//   facebook: {
+//     id: String,
+//     email: String
+//   },
+//   google: {
+//     id: String,
+//     email: String
+//   }
+// });
 
-userSchema.pre('save', function(next) {
-  var user = this;
-  if (!user.isModified('password')) return next();
-  bcrypt.genSalt(10, function(err, salt) {
-    if (err) return next(err);
-    bcrypt.hash(user.password, salt, function(err, hash) {
-      if (err) return next(err);
-      user.password = hash;
-      next();
-    });
-  });
-});
+// userSchema.pre('save', function(next) {
+//   var user = this;
+//   if (!user.isModified('password')) return next();
+//   bcrypt.genSalt(10, function(err, salt) {
+//     if (err) return next(err);
+//     bcrypt.hash(user.password, salt, function(err, hash) {
+//       if (err) return next(err);
+//       user.password = hash;
+//       next();
+//     });
+//   });
+// });
 
-userSchema.methods.comparePassword = function(candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-    if (err) return cb(err);
-    cb(null, isMatch);
-  });
-};
+// userSchema.methods.comparePassword = function(candidatePassword, cb) {
+//   bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+//     if (err) return cb(err);
+//     cb(null, isMatch);
+//   });
+// };
 
-var User = mongoose.model('User', userSchema);
+// var User = mongoose.model('User', userSchema);
 
 
 function isAuthenticated(req, res, next) {

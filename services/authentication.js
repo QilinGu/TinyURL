@@ -140,6 +140,7 @@ angular.module('tinyurlApp')
       logout: function() {
         delete $window.localStorage.token;
         $rootScope.currentUser = null;
+        $window.location.reload();
         $alert({
           content: 'You have been logged out.',
           animation: 'fadeZoomFadeDown',

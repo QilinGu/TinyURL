@@ -3,7 +3,8 @@ var Schema = mongoose.Schema;
 
 var UrlSchema = new Schema ({
 	longUrl: String,
-	shortUrl: String
+	shortUrl: String,
+	user: String
 });
 
 var urlModel = mongoose.model('urlModel', UrlSchema);

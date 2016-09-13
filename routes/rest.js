@@ -29,6 +29,29 @@ function isAuthenticated(req, res, next) {
   }
 }
 
+// function currentUser (req) {
+//     var token = getToken(req.headers);
+//     if (token) {
+//         var user = jwt.decode(token, config.secret).email;
+//     } else {
+//         var user = "";
+//     }
+//     return user;
+// };
+
+// function getToken (headers) {
+//     if (headers && headers.authorization) {
+//         var parted = headers.authorization.split(' ');
+//         if (parted.length === 2) {
+//             return parted[1];
+//         } else {
+//             return null;
+//         }
+//     } else {
+//         return null;
+//     }
+// };
+
 router.post('/urls', jsonParser, function (req, res) {
     var longUrl = req.body.longUrl;
     var user = req.body.user;
@@ -66,6 +89,13 @@ router.post('/users/urls', jsonParser, isAuthenticated, function (req, res) {
     urlService.getShortUrl(longUrl, user, function (url) {
         res.json(url);
     });
+});
+
+router.get('/user/urls', jsonParser, isAuthenticated, function (req, res) {
+    var user = req.user.email;
+    urlService.getUrls(user, function (urls) {
+        res.json(urls);
+    })
 });
 
 

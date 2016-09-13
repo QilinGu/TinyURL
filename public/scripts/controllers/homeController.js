@@ -13,13 +13,16 @@ app.controller("homeController",
 		    }
         } else {
         	$scope.urls = [];
+
         	var getUrls = function () {
-                $http.get('/api/v1/users/urls')
+                $http.get('/api/v1/user/urls')
                     .success(function (data) {
                         $scope.urls = data;
                     });
             };
+
             getUrls();
+            console.log($scope.urls);
 
 	        $scope.submit = function() {
 		        $http.post('/api/v1/users/urls', {

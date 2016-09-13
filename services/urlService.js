@@ -62,7 +62,14 @@ var getLongUrl = function (shortUrl, callback) {
     });
 };
 
+var getUrls = function (user, callback) {
+    UrlModel.find({user: user}, function (err, urls) {
+        callback(urls);
+    });
+};
+
 module.exports = {
     getShortUrl: getShortUrl,
-    getLongUrl: getLongUrl
+    getLongUrl: getLongUrl,
+    getUrls: getUrls
 };

@@ -1,54 +1,54 @@
 <div ng-if="!currentUser">
-<div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        <h6>Input Your Long URL</h6>
-        <form ng-submit="submit()">
-            <div class="form-group">
-                <input class="form-control" type="text" ng-model="$parent.longUrl"/>
-            </div>
-            <!--<div class="g-recaptcha" data-sitekey="6Lfn0ykTAAAAAOeUfYFGNtBhGO_6ZdqWloAgE8Y0"></div>-->
-            <input type="submit" value="Get Your Short URL" class="btn btn-primary"/>
-        </form>
-    </div>
+	<div class="row" style="padding-top: 15px; padding-bottom: 15px;">
+		<div class="col-md-6 col-md-offset-3">
+			<h6>Type or Paste Your Long URL</h6>
+			<form ng-submit="submit()">
+				<div class="form-group">
+					<input class="form-control" type="text" ng-model="$parent.longUrl"/>
+				</div>
+				<!--<div class="g-recaptcha" data-sitekey="6Lfn0ykTAAAAAOeUfYFGNtBhGO_6ZdqWloAgE8Y0"></div>-->
+				<input type="submit" value="Get Your Short URL" class="btn btn-primary"/>
+			</form>
+		</div>
+	</div>
 </div>
-</div>
-
 <div ng-if="currentUser">
-<div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        <h6>Input Your Long URL</h6>
-        <form ng-submit="submit()">
-            <div class="form-group">
-                <input class="form-control" type="text" ng-model="$parent.longUrl"/>
-            </div>
-            <input type="submit" value="Get Your Short URL" class="btn btn-primary"/>
-        </form>
+	<div class="row" style="padding-top: 15px; padding-bottom: 15px;">
+		<div class="col-md-6 col-md-offset-3">
+			<h6>Type or Paste Your Long URL</h6>
+			<form ng-submit="submit()">
+				<div class="form-group">
+					<input class="form-control" type="text" ng-model="$parent.longUrl"/>
+				</div>
+				<input type="submit" value="Get Your Short URL" style="font-size: 18px;"class="btn btn-primary"/>
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-10 col-md-offset-1" style="padding-top: 50px;">
+			<div class="panel panel-default">
+				<div class="panel-heading" style="background: #ECF0F1; font-weight: 800; font-size: 16pt;">Your URL List</div>
+				<div class="panel-body">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>Original URL</th>
+								<th>Short URL</th>
+								<th>Manage</th>
+								<th>Statistics</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="url in urls track by $index">
+								<td style="word-wrap: break-word;min-width: 160px;max-width: 300px;"><a ng-href="{{url.longUrl}}">{{url.longUrl}}</a></td>
+								<td><a href="{{prefix + url.shortUrl}}">{{prefix + url.shortUrl}}</a></td>
+								<td><a href="#/"><span class="glyphicon glyphicon-file"></span></a>&nbsp;<a href="#/" ng-click="delete(url.shortUrl)"><span class="glyphicon glyphicon-remove"></span></a></td>
+								<td><a ng-href="#/urls/{{url.shortUrl}}">Stats<i class="fa fa-line-chart" aria-hidden="true" style="padding-left: 10px;"></i></a></td>
+							</tr>
+						</tbody>
+			        </table>
+			    </div>
+	        </div>
+       </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th>Original URL</th>
-                <th>Short URL</th>
-                <th>Analytics</th>
-                <th>Manage</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="url in urls track by $index">
-                <td style="word-wrap: break-word;min-width: 160px;max-width: 300px;"><a ng-href="{{url.longUrl}}">{{url.longUrl}}</a>
-                </td>
-                <td><a href="{{prefix + url.shortUrl}}">{{prefix + url.shortUrl}}</a></td>
-                <td><a ng-href="#/urls/{{url.shortUrl}}"><span class="glyphicon glyphicon-stats"></span>
-                    Stats</a></td>
-                <td><a href="#/"><span class="glyphicon glyphicon-file"></span></a>&nbsp;
-                    <a href="#/" ng-click="delete(url.shortUrl)"><span class="glyphicon glyphicon-remove"></span></a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
 </div>

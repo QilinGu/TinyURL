@@ -53,7 +53,7 @@ angular.module('tinyurlApp')
               $alert({
                 title: 'Cheers!',
                 content: 'You have successfully signed-in with Facebook.',
-                animation: 'fadeZoomFadeDown',
+                animation: 'fadeZoomFadeRight',
                 type: 'material',
                 duration: 3
               });
@@ -80,7 +80,7 @@ angular.module('tinyurlApp')
                 $alert({
                   title: 'Cheers!',
                   content: 'You have successfully signed-in with Google.',
-                  animation: 'fadeZoomFadeDown',
+                  animation: 'fadeZoomFadeRight',
                   type: 'material',
                   duration: 3
                 });
@@ -99,8 +99,9 @@ angular.module('tinyurlApp')
             $alert({
               title: 'Cheers!',
               content: 'You have successfully logged in.',
-              animation: 'fadeZoomFadeDown',
-              type: 'material',
+              placement: 'top-right',
+              animation: 'fadeZoomFadeRight',
+              type: 'success',
               duration: 3
             });
           })
@@ -109,8 +110,9 @@ angular.module('tinyurlApp')
             $alert({
               title: 'Error!',
               content: 'Invalid username or password.',
-              animation: 'fadeZoomFadeDown',
-              type: 'material',
+              placement: 'top-right',
+              animation: 'fadeZoomFadeRight',
+              type: 'danger',
               duration: 3
             });
           });
@@ -122,8 +124,9 @@ angular.module('tinyurlApp')
             $alert({
               title: 'Congratulations!',
               content: 'Your account has been created.',
-              animation: 'fadeZoomFadeDown',
-              type: 'material',
+              placement: 'top-right',
+              animation: 'fadeZoomFadeRight',
+              type: 'success',
               duration: 3
             });
           })
@@ -131,8 +134,8 @@ angular.module('tinyurlApp')
             $alert({
               title: 'Error!',
               content: response.data,
-              animation: 'fadeZoomFadeDown',
-              type: 'material',
+              animation: 'fadeZoomFadeRight',
+              type: 'danger',
               duration: 3
             });
           });
@@ -143,8 +146,9 @@ angular.module('tinyurlApp')
         $window.location.reload();
         $alert({
           content: 'You have been logged out.',
-          animation: 'fadeZoomFadeDown',
-          type: 'material',
+          animation: 'fadeZoomFadeRight',
+          placement: 'top-right',
+          type: 'info',
           duration: 3
         });
       }

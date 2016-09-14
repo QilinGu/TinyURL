@@ -1,7 +1,7 @@
 <div ng-if="!currentUser">
 	<div class="row" style="padding-top: 15px; padding-bottom: 15px;">
-		<div class="col-md-6 col-md-offset-3">
-			<h6>Type or Paste Your Long URL</h6>
+		<div class="col-md-6 col-md-offset-3" style="font-weight: 500 !important; font-size: 16px !important;">
+			<h6 style="font-weight: 600 !important; font-size: 20px !important;">Type or Paste Your Long URL</h6>
 			<form ng-submit="submit()">
 				<div class="form-group">
 					<input class="form-control" type="text" ng-model="$parent.longUrl"/>
@@ -11,10 +11,21 @@
 			</form>
 		</div>
 	</div>
+	<div class="row" style="margin-top: 30px;">
+	<div class="col-md-4">
+	SHORTEN
+	</div>
+	<div class="col-md-4">
+	MEASURE
+	</div>
+	<div class="col-md-4">
+	LEARN
+	</div>
+	</div>
 </div>
 <div ng-if="currentUser">
 	<div class="row" style="padding-top: 15px; padding-bottom: 15px;">
-		<div class="col-md-6 col-md-offset-3">
+		<div class="col-md-6 col-md-offset-3" style="font-weight: 500; font-size: 16px;">
 			<h6>Type or Paste Your Long URL</h6>
 			<form ng-submit="submit()">
 				<div class="form-group">

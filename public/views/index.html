@@ -30,6 +30,24 @@
 			top: 50px !important;
 			right: 12px !important;
 		}
+		.or-separator {
+			background: none;
+			height: 34px;
+			position: relative;
+			text-align: center;
+			hr {
+				border-top: 5px solid #fff !important;
+				margin: -15px auto 5px auto;
+				width: 90%;
+			}
+			.text {
+				background-color: #fff;
+				display: inline-block;
+				margin: 0;
+				padding: 8px;
+				font-size: 14px !important;
+			}
+		}
 		</style>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.min.css">
@@ -55,7 +73,7 @@
 				</div>
 			</div>
 		</header>
-		<div class="container-fullwidth">
+		<div class="container">
 			<div ng-view></div>
 		</div>
 	</body>

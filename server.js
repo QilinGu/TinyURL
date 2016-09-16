@@ -10,8 +10,13 @@ var bcrypt = require('bcryptjs');
 var moment = require('moment');
 var _ = require('lodash');
 var useragent = require('express-useragent');
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var port = process.env.PORT || 3000;
+var server = app.listen(port, function () {
+    console.log("server starts on port: " + port);
+});
+var io = require('socket.io')(server);
+app.io = io;
+
 var User = require('./models/userModel');
 
 mongoose.connect('mongodb://urluser:urlpwd@ds019678.mlab.com:19678/tinyurl');
@@ -24,11 +29,11 @@ app.use('/public', express.static(__dirname + "/public"));
 
 app.use('/api/v1', restRouter);
 
-app.use('/:shortUrl', redirectRouter);
+app.use('/:shortUrl', redirectRouter(app));
 
 app.use('/', indexRouter);
 
-app.listen(3000);
+//app.listen(3000);
 
 app.use(bodyParser.json());
 
@@ -192,4 +197,27 @@ app.get('/api/users', function(req, res, next) {
     if (err) return next(err);
     res.send({ available: !user });
   });
+});
+
+io.on('connection', function (socket) {
+    socket.on('statsPageOpen', function (data) {
+        // redisClient.subscribe(data.shortUrl, function () {
+        //     socket.shortUrl = data.shortUrl;
+        //     console.log('subscribe channel: ' + data.shortUrl);
+        // });
+        // redisClient.on('message', function (err, msg) {
+        //     if (msg === socket.shortUrl) {
+        //         socket.emit('reload', 'please reload stats');
+        //     }
+        // });
+        app.io[data.shortUrl] = socket;//为了在redirect里面调用app.io的时候可以调用到具体是哪个socket,然后进行通信
+        socket.shortUrl = data.shortUrl;//为了在disconnect的时候通过找shortUrl把app.io里面对该socket的映射删除
+    });
+    socket.on('disconnect', function () {
+        delete app.io[socket.shortUrl];//删除socket映射
+        // redisClient.unsubscribe(socket.shortUrl, function () {
+        //     console.log('Unsubsribe channel:' + socket.shortUrl);
+        // });
+
+    })
 });

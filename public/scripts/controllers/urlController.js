@@ -2,11 +2,11 @@ var app = angular.module("tinyurlApp");
 
 app.controller("urlController",
 	["$scope", "$http", "$rootScope", "$routeParams", function($scope, $http, $rootScope, $routeParams) {
-        // var socket = io();
-        // socket.emit('statsPageOpen', {shortUrl: $stateParams.shortUrl});
-        // socket.on('reload', function () {
-        //     loadStats();
-        // });
+        var socket = io();
+        socket.emit('statsPageOpen', {shortUrl: $routeParams.shortUrl});
+        socket.on('reload', function () {
+            loadStats();
+        });
 
 		$http.get('/api/v1/urls/' + $routeParams.shortUrl)
 		    .success(function (data) {
@@ -51,7 +51,7 @@ app.controller("urlController",
                 });
         };
 
-        $scope.getTime('hour');
+        //$scope.getTime('hour');
 
         var renderChart = function (chart, infos) {
             $scope[chart + 'Labels'] = [];
@@ -65,8 +65,20 @@ app.controller("urlController",
                 });
         };
 
-        renderChart("pie", "referer");
-        renderChart("doughnut", "country");
-        renderChart("bar", "platform");
-        renderChart("base", "browser");
+        var getTotalClicks = function () {
+            $http.get('/api/v1/urls/' + $routeParams.shortUrl + "/totalClicks")
+                .success(function (data) {
+                    $scope.totalClicks = data;
+                });
+        };
+
+        var loadStats = function () {
+            getTotalClicks();
+            renderChart("pie", "referer");
+            renderChart("doughnut", "country");
+            renderChart("bar", "platform");
+            renderChart("base", "browser");
+            $scope.getTime('hour');
+        };
+
 }]);
